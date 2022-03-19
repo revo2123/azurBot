@@ -1,56 +1,84 @@
 #Disclaimer: might just buy some useless shit on accident, no warranty of function given
 
 
-#import libs
+#import libsfrom pynput.mouse import Button, Controller
 from pynput.mouse import Button, Controller
+from win32api import GetSystemMetrics
+import pyscreeze
 import time
 
 
-#init global variables
-width = float(input('Width: '))
-height = float(input('Height: '))
-totalTimesInput = int(input('Total Runs: '))
-mouse = Controller()
+#class definition
+class Btn:
+    def __init__(self, x, y, r, g, b):
+        self.x = x
+        self.y = y
+        self.color = Color(r, g, b)
 
+class Color:
+    def __init__(self, r, g, b):
+        self.r = r
+        self.g = g
+        self.b = b
 
-#helperfunctions
+class Screen:
+    width = GetSystemMetrics(0)
+    height = GetSystemMetrics(1)
+        
+#helper functions
 def percentToPixel(size, percent):
-    return (size * percent / 100)
+    return (size * percent)
 
 def leftClick():
     mouse.press(Button.left)
     mouse.release(Button.left)
 
-def clickGo():
-    #Click "GO" 1
-    mouse.position = (percentToPixel(width, 74.4), percentToPixel(height, 70.4))
-    leftClick()
-    time.sleep(0.5)
-    #Click "GO" 2
-    mouse.position = (percentToPixel(width, 82.9), percentToPixel(height, 81))
-    leftClick()
-    
-def clickContinue():
-    #Click "Continue"
-    mouse.position = (percentToPixel(width, 65), percentToPixel(height, 82))
+def clickBtn(btn):
+    mouse.position = (btn.x, btn.y)
     leftClick()
 
 
-#init
+#init global variables
+#input variables
+totalTimesInput = int(input('Total Runs: '))
+#init screenSize
+screenSize = Screen()
+#init mouse
+mouse = Controller()
+#continue Button
+cntBtn = Btn(int(percentToPixel(screenSize.width, 0.7104)), int(percentToPixel(screenSize.height, 0.8258)), 90, 142, 214)
+#go Buttons
+goBtn1 = Btn(int(percentToPixel(screenSize.width, 0.744)), int(percentToPixel(screenSize.height, 0.704)), 90, 142, 214) # input correct color values for go buttons
+goBtn2 = Btn(int(percentToPixel(screenSize.width, 0.829)), int(percentToPixel(screenSize.height, 0.81)), 90, 142, 214)
+
+
+#main function
 def main():
+    print('-- Started --')
     runCount = 0
-    time.sleep(1)
-    #clickGo()
+    
+    isGoBtn = pyscreeze.pixelMatchesColor(goBtn1.x, goBtn1.y, (goBtn1.color.r, goBtn1.color.g, goBtn1.color.b), tolerance=10)
+    if isGoBtn:
+        clickBtn(goBtn1)
+        print('Go_1 Clicked')
+        time.sleep(0.5)
+        clickBtn(goBtn2)
+        print('Go_2 Clicked')
     runCount += 1
-    # startTime = time.time() TODO: add time counter
-    print('\nRun_Nr.: ' + str(runCount) + ' (' + str(time.strftime('%H:%M:%S')) + ')')
-    while (runCount < totalTimesInput):
-        #clickContinue()
-        #TODO: if first time click "GO" if any other time click "continue", track time in between clicks, register end of stage
-        runCount += 1
-        print('Run_Nr.: ' + str(runCount) + ' (' + str(time.strftime('%H:%M:%S')) + ')')
-
+    
+    while True:
+        if runCount < totalTimesInput:
+            #check for continue button
+            isCntBtn = pyscreeze.pixelMatchesColor(cntBtn.x, cntBtn.y, (cntBtn.color.r, cntBtn.color.g, cntBtn.color.b), tolerance=10)
+            #if continue button is visible
+            if isCntBtn:
+                clickBtn(cntBtn)
+                runCount += 1
+                print('Continue clicked')
+            time.sleep(1)
+        else:
+            print('-- Finnished --')
+            break
 
 #calling main function
 main()
-
