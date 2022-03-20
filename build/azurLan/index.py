@@ -1,9 +1,9 @@
 #Disclaimer: might just buy some useless shit on accident, no warranty of function given
-
+#startup message
+print('PG -- Azur Bot -- v.1.0.0 -- Script\n')
 
 #import libsfrom pynput.mouse import Button, Controller
 from pynput.mouse import Button, Controller
-from win32api import GetSystemMetrics
 import pyscreeze
 import time
 
@@ -22,8 +22,8 @@ class Color:
         self.b = b
 
 class Screen:
-    width = GetSystemMetrics(0)
-    height = GetSystemMetrics(1)
+    width = int(input('Width: '))
+    height = int(input('Height: '))
         
 #helper functions
 def percentToPixel(size, percent):
@@ -39,10 +39,8 @@ def clickBtn(btn):
 
 
 #init global variables
-#startup message
-print('PG -- Azur Bot -- v.1.0.0\n')
 #input variables
-totalTimesInput = int(input('Total Runs: '))
+totalTimesInput = int(input('\nTotal Runs: '))
 #init screenSize
 screenSize = Screen()
 #init mouse
@@ -58,7 +56,7 @@ goBtn2 = Btn(int(percentToPixel(screenSize.width, 0.896)), int(percentToPixel(sc
 def main():
     time.sleep(5)
     runCount = 0
-    print('-- Started --')
+    print('\n-- Started --')
     isGoBtn = pyscreeze.pixelMatchesColor(goBtn1.x, goBtn1.y, (goBtn1.color.r, goBtn1.color.g, goBtn1.color.b), tolerance=10)
     if isGoBtn:
         print('\tStarting / Run_Nr.: ' + str(runCount + 1))
