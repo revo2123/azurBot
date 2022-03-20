@@ -6,24 +6,9 @@ print('PG -- Azur Bot -- v.1.0.0 -- Script\n')
 from pynput.mouse import Button, Controller
 import pyscreeze
 import time
-
-
-#class definition
-class Btn:
-    def __init__(self, x, y, r, g, b):
-        self.x = x
-        self.y = y
-        self.color = Color(r, g, b)
-
-class Color:
-    def __init__(self, r, g, b):
-        self.r = r
-        self.g = g
-        self.b = b
-
-class Screen:
-    width = int(input('Width: '))
-    height = int(input('Height: '))
+#importing classes
+from classes.Screen import Screen
+from classes.Button import Btn
         
 #helper functions
 def percentToPixel(size, percent):
@@ -48,7 +33,7 @@ mouse = Controller()
 #continue Button
 cntBtn = Btn(int(percentToPixel(screenSize.width, 0.7104)), int(percentToPixel(screenSize.height, 0.8258)), 90, 142, 214)
 #go Buttons
-goBtn1 = Btn(int(percentToPixel(screenSize.width, 0.811)), int(percentToPixel(screenSize.height, 0.679)), 247, 202, 66) # input correct color values for go buttons
+goBtn1 = Btn(int(percentToPixel(screenSize.width, 0.811)), int(percentToPixel(screenSize.height, 0.679)), 247, 202, 66)
 goBtn2 = Btn(int(percentToPixel(screenSize.width, 0.896)), int(percentToPixel(screenSize.height, 0.7925)), 247, 202, 66)
 
 
