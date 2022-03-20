@@ -1,6 +1,6 @@
 #Disclaimer: might just buy some useless shit on accident, no warranty of function given
 #startup message
-print('PG -- Azur Bot -- v.1.0.0 -- Script\n')
+print('PG -- Azur Bot -- v.1.1.0 -- Script\n')
 
 #import libsfrom pynput.mouse import Button, Controller
 from pynput.mouse import Button, Controller
