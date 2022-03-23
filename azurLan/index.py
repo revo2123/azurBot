@@ -1,6 +1,6 @@
 #Disclaimer: might just buy some useless shit on accident, no warranty of function given
 #startup message
-print('PG -- Azur Bot -- v.1.0.0 -- Script\n')
+print('PG -- Azur Bot -- v.1.1.0 -- Script\n')
 
 #import libsfrom pynput.mouse import Button, Controller
 from pynput.mouse import Button, Controller
@@ -85,17 +85,19 @@ def main():
         #check for continue button
         isCntBtn = pyscreeze.pixelMatchesColor(cntBtn.x, cntBtn.y, (cntBtn.color.r, cntBtn.color.g, cntBtn.color.b), tolerance=0)
         
-        if runCount < totalTimesInput:
+        if runCount < totalTimesInput: 
             #if continue button is visible
             if isCntBtn:
+                #update runCount
+                runCount += 1
+                
                 #set endRunTime if startRunTime is already set and calculate passed time
                 if startRunTime:
-                    runCount += 1
                     endRunTime = time.time()
                     print('\tFinnished / Run_Nr.: ' + str(runCount) + '\tTime: ' + calcTime(startRunTime, endRunTime))
                 
                 #start new run
-                print('\tStarting / Run_Nr.: ' + str(runCount + 1))
+                print('\tStarting / Run_Nr.: ' + str(runCount))
                 
                 #set start time
                 startRunTime = time.time()
@@ -103,9 +105,6 @@ def main():
                 #click continue button
                 clickBtn(cntBtn)
                 print('\t\tContinue clicked (' + time.strftime("%H:%M:%S") + ')')
-                
-                #update runCount
-                runCount += 1
                 
                 #timeout
                 time.sleep(1)
