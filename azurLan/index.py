@@ -88,9 +88,6 @@ def main():
         if runCount < totalTimesInput: 
             #if continue button is visible
             if isCntBtn:
-                #update runCount
-                runCount += 1
-                
                 #set endRunTime if startRunTime is already set and calculate passed time
                 if startRunTime:
                     endRunTime = time.time()
@@ -101,6 +98,9 @@ def main():
                 
                 #set start time
                 startRunTime = time.time()
+                
+                #update runCount
+                runCount += 1
                 
                 #click continue button
                 clickBtn(cntBtn)
