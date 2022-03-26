@@ -8,35 +8,6 @@ import pyscreeze
 import time
 #importing classes
 from classes.Button import Btn
-        
-#helper functions
-def percentToPixel(size, percent):
-    return (size * percent)
-
-def leftClick():
-    mouse.press(Button.left)
-    mouse.release(Button.left)
-
-def clickBtn(btn):
-    mouse.position = (btn.x, btn.y)
-    leftClick()
-    
-def calcTime(startRunTime, endRunTime):
-    showMinutes = 0
-    
-    timeDiff = endRunTime - startRunTime
-    leftOverSec = timeDiff
-    showSec = timeDiff
-    while leftOverSec >= 60:
-        showMinutes += 1
-        leftOverSec -= 60
-        showSec = timeDiff % 60
-
-    if str(len(str(int(showSec)))) == '1':
-        timeToClear = str(showMinutes) + ':0' + str(int(showSec))
-    else:
-        timeToClear = str(showMinutes) + ':' + str(int(showSec))
-    return timeToClear
 
 
 #init global variables
@@ -49,7 +20,53 @@ cntBtn = Btn(1363, 990, 90, 142, 214)
 #go Buttons
 goBtn1 = Btn(1557, 819, 247, 202, 66)
 goBtn2 = Btn(1720, 951, 247, 202, 66)
+#array for runTime
+runTimes = []
 
+
+#helper functions
+def percentToPixel(size, percent):
+    return (size * percent)
+
+def leftClick():
+    mouse.press(Button.left)
+    mouse.release(Button.left)
+
+def clickBtn(btn):
+    mouse.position = (btn.x, btn.y)
+    leftClick()
+    
+def calcTimeStartEnd(startRunTime, endRunTime):
+    showMinutes = 0
+    timeDiff = endRunTime - startRunTime
+    leftOverSec = timeDiff
+    showSec = timeDiff
+    while leftOverSec >= 60:
+        showMinutes += 1
+        leftOverSec -= 60
+        showSec = timeDiff % 60
+    if str(len(str(int(showSec)))) == '1':
+        timeToClear = str(showMinutes) + ':0' + str(int(showSec))
+    else:
+        timeToClear = str(showMinutes) + ':' + str(int(showSec))
+    return timeToClear
+
+def calcTime(runTime):
+    showMinutes = 0
+    leftOverSec = runTime
+    showSec = runTime
+    while leftOverSec >= 60:
+        showMinutes += 1
+        leftOverSec -= 60
+        showSec = runTime % 60
+    if str(len(str(int(showSec)))) == '1':
+        timeToClear = str(showMinutes) + ':0' + str(int(showSec))
+    else:
+        timeToClear = str(showMinutes) + ':' + str(int(showSec))
+    return timeToClear
+
+def calcTimeDiff(startRunTime, endRunTime):
+    return (endRunTime - startRunTime)
 
 #main function 
 def main():
@@ -87,7 +104,8 @@ def main():
                 #set endRunTime if startRunTime is already set and calculate passed time
                 if startRunTime:
                     endRunTime = time.time()
-                    print('\tFinnished / Run_Nr.: ' + str(runCount) + '\tTime: ' + calcTime(startRunTime, endRunTime))
+                    print('\tFinnished / Run_Nr.: ' + str(runCount) + '\tTime: ' + calcTimeStartEnd(startRunTime, endRunTime))
+                    runTimes.append(calcTimeDiff(startRunTime, endRunTime))
                 #set start time
                 startRunTime = time.time()
                 #update runCount
@@ -104,11 +122,18 @@ def main():
             if isCntBtn:
                 #set final end time and calculate passed time
                 endRunTime = time.time()
-                print('\tFinnished / Run_Nr.: ' + str(runCount) + '\tTime: ' + calcTime(startRunTime, endRunTime))
+                print('\tFinnished / Run_Nr.: ' + str(runCount) + '\tTime: ' + calcTimeStartEnd(startRunTime, endRunTime))
+                runTimes.append(calcTimeDiff(startRunTime, endRunTime))
                 #end loop
                 print('-- Finnished --')
                 break
         runAnyways = False
+    
+    totalRunTime = 0
+    for runTime in runTimes:
+        totalRunTime += runTime
+    avgTime = totalRunTime / len(runTimes)
+    print('\nAverage Time To Clear: ' + str(calcTime(avgTime)))
             
             
 #calling main function
