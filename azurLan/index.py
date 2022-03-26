@@ -1,13 +1,12 @@
-#Disclaimer: might just buy some useless shit on accident, no warranty of function given
+#Disclaimer: might just buy some useless shit on accident, no warranty of function given, if you start on continue button you are a bitch
 #startup message
-print('PG -- Azur Bot -- v.1.1.0 -- Script\n')
+print('PG -- Azur Bot -- v.1.1.2 -- Script\n')
 
 #import libsfrom pynput.mouse import Button, Controller
 from pynput.mouse import Button, Controller
 import pyscreeze
 import time
 #importing classes
-from classes.Screen import Screen
 from classes.Button import Btn
         
 #helper functions
@@ -43,15 +42,13 @@ def calcTime(startRunTime, endRunTime):
 #init global variables
 #input variables
 totalTimesInput = int(input('\nTotal Runs: '))
-#init screenSize
-screenSize = Screen()
 #init mouse
 mouse = Controller()
 #continue Button
-cntBtn = Btn(int(percentToPixel(screenSize.width, 0.7104)), int(percentToPixel(screenSize.height, 0.8258)), 90, 142, 214)
+cntBtn = Btn(1363, 990, 90, 142, 214)
 #go Buttons
-goBtn1 = Btn(int(percentToPixel(screenSize.width, 0.811)), int(percentToPixel(screenSize.height, 0.679)), 247, 202, 66)
-goBtn2 = Btn(int(percentToPixel(screenSize.width, 0.896)), int(percentToPixel(screenSize.height, 0.7925)), 247, 202, 66)
+goBtn1 = Btn(1557, 819, 247, 202, 66)
+goBtn2 = Btn(1720, 951, 247, 202, 66)
 
 
 #main function 
@@ -67,57 +64,51 @@ def main():
     
     isGoBtn = pyscreeze.pixelMatchesColor(goBtn1.x, goBtn1.y, (goBtn1.color.r, goBtn1.color.g, goBtn1.color.b), tolerance=0)
     if isGoBtn:
-        print('\tStarting / Run_Nr.: ' + str(runCount + 1))
-        
+        #update runCount
+        runCount += 1
+        runAnyways = True
+        print('\tStarting / Run_Nr.: ' + str(runCount))
         #click first go_button
         clickBtn(goBtn1)
         print('\t\tGo_1 Clicked (' + time.strftime("%H:%M:%S") + ')')
         time.sleep(0.5)
-        
         #click second go_button
         clickBtn(goBtn2)
         print('\t\tGo_2 Clicked (' + time.strftime("%H:%M:%S") + ')')
-        
         #start timer
         startRunTime = time.time()
     
     while True:
         #check for continue button
         isCntBtn = pyscreeze.pixelMatchesColor(cntBtn.x, cntBtn.y, (cntBtn.color.r, cntBtn.color.g, cntBtn.color.b), tolerance=0)
-        
-        if runCount < totalTimesInput: 
+        if runCount < totalTimesInput or runAnyways: 
             #if continue button is visible
             if isCntBtn:
                 #set endRunTime if startRunTime is already set and calculate passed time
                 if startRunTime:
                     endRunTime = time.time()
                     print('\tFinnished / Run_Nr.: ' + str(runCount) + '\tTime: ' + calcTime(startRunTime, endRunTime))
-                
-                #start new run
-                print('\tStarting / Run_Nr.: ' + str(runCount))
-                
                 #set start time
                 startRunTime = time.time()
-                
                 #update runCount
                 runCount += 1
-                
+                #start new run
+                print('\tStarting / Run_Nr.: ' + str(runCount))          
                 #click continue button
                 clickBtn(cntBtn)
                 print('\t\tContinue clicked (' + time.strftime("%H:%M:%S") + ')')
-                
                 #timeout
-                time.sleep(1)
+                time.sleep(1)   
         else:
             #if continue button is visible
             if isCntBtn:
                 #set final end time and calculate passed time
                 endRunTime = time.time()
                 print('\tFinnished / Run_Nr.: ' + str(runCount) + '\tTime: ' + calcTime(startRunTime, endRunTime))
-                
                 #end loop
                 print('-- Finnished --')
                 break
+        runAnyways = False
             
             
 #calling main function
